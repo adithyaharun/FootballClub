@@ -9,7 +9,6 @@
         <item>Spanish La Liga</item>
     </array>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_last_match">Last Match</string>
+    <string name="title_next_match">Next Match</string>
 </resources>

@@ -1,19 +1,26 @@
 package com.adithyaharun.footballclub.UI.Adapter
 
+import android.graphics.Color
+import android.graphics.Typeface
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.adithyaharun.footballclub.Model.Team
+import com.adithyaharun.footballclub.Model.Event
 import com.adithyaharun.footballclub.R
-import com.adithyaharun.footballclub.R.id.team_badge
-import com.adithyaharun.footballclub.R.id.team_name
+import com.adithyaharun.footballclub.R.id.*
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onTouch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class MainAdapter(private val teams: List<Team>)
+class MainAdapter(private val events: List<Event>)
     : RecyclerView.Adapter<TeamViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
@@ -21,11 +28,10 @@ class MainAdapter(private val teams: List<Team>)
     }
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
-        holder.bindItem(teams[position])
+        holder.bindItem(events[position], position)
     }
 
-    override fun getItemCount(): Int = teams.size
-
+    override fun getItemCount(): Int = events.size
 }
 
 class TeamUI : AnkoComponent<ViewGroup> {
@@ -33,37 +39,106 @@ class TeamUI : AnkoComponent<ViewGroup> {
         return with(ui) {
             linearLayout {
                 lparams(width = matchParent, height = wrapContent)
-                padding = dip(16)
-                orientation = LinearLayout.HORIZONTAL
-
-                imageView {
-                    id = R.id.team_badge
-                }.lparams{
-                    height = dip(50)
-                    width = dip(50)
-                }
+                orientation = LinearLayout.VERTICAL
 
                 textView {
-                    id = R.id.team_name
-                    textSize = 16f
+                    id = R.id.match_time
+                    backgroundColor = Color.rgb(230, 230, 230)
+                    verticalPadding = dip(8)
+                    horizontalPadding = dip(16)
                 }.lparams{
-                    margin = dip(15)
+                    width = matchParent
+                    height = wrapContent
                 }
 
+                linearLayout {
+                    lparams(width = matchParent, height = wrapContent)
+                    orientation = LinearLayout.HORIZONTAL
+                    id = R.id.match_layout
+
+                    linearLayout {
+                        lparams(width = 0, height = wrapContent, weight = 3f)
+                        orientation = LinearLayout.VERTICAL
+                        verticalPadding = dip(8)
+                        horizontalPadding = dip(16)
+
+                        textView {
+                            id = R.id.team_home
+                            textAlignment = View.TEXT_ALIGNMENT_TEXT_END
+                        }.lparams {
+                            width = matchParent
+                            height = wrapContent
+                        }
+
+                        textView {
+                            id = R.id.score_home
+                            textAlignment = View.TEXT_ALIGNMENT_TEXT_END
+                            textSize = 18f
+                        }.lparams {
+                            width = matchParent
+                            height = wrapContent
+                        }.setTypeface(null, Typeface.BOLD)
+                    }
+
+                    textView {
+                        text = "vs"
+                        textAlignment = View.TEXT_ALIGNMENT_CENTER
+                        gravity = Gravity.CENTER_VERTICAL
+                    }.lparams {
+                        width = 0
+                        height = matchParent
+                        weight = 1f
+                    }
+
+                    linearLayout {
+                        lparams(width = 0, height = wrapContent, weight = 3f)
+                        orientation = LinearLayout.VERTICAL
+                        verticalPadding = dip(8)
+                        horizontalPadding = dip(16)
+
+                        textView {
+                            id = R.id.team_away
+                        }.lparams{
+                            width = matchParent
+                            height = wrapContent
+                        }
+
+                        textView {
+                            id = R.id.score_away
+                            textSize = 18f
+                        }.lparams{
+                            width = matchParent
+                            height = wrapContent
+                        }.setTypeface(null, Typeface.BOLD)
+                    }
+                }
             }
         }
     }
-
 }
 
 class TeamViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    private val tvMatchTime: TextView = view.find(match_time)
+    private val layoutMatch: LinearLayout = view.find(match_layout)
+    private val tvTeamHome: TextView = view.find(team_home)
+    private val tvScoreHome: TextView = view.find(score_home)
+    private val tvTeamAway: TextView = view.find(team_away)
+    private val tvScoreAway: TextView = view.find(score_away)
+    private val sqlFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val humanFormatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.US)
 
-    private val teamBadge: ImageView = view.find(team_badge)
-    private val teamName: TextView = view.find(team_name)
+    fun bindItem(event: Event, position: Int) {
+        val matchDate = sqlFormatter.parse(event.dateEvent)
+        tvMatchTime.text = humanFormatter.format(matchDate)
 
-    fun bindItem(teams: Team) {
-        Picasso.get().load(teams.teamBadge).into(teamBadge)
-        teamName.text = teams.teamName
+        tvTeamHome.text = event.strHomeTeam
+        tvTeamAway.text = event.strAwayTeam
+
+        tvScoreHome.text = event.intHomeScore.toString()
+        tvScoreAway.text = event.intAwayScore.toString()
+
+        layoutMatch.onClick {
+        }
     }
 }
 
