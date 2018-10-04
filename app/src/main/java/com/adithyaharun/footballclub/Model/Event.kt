@@ -1,6 +1,7 @@
 package com.adithyaharun.footballclub.Model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Event (
 
@@ -156,4 +157,4 @@ data class Event (
 
 	@field:SerializedName("strPoster")
 	val strPoster: Any? = null
-)
+): Serializable

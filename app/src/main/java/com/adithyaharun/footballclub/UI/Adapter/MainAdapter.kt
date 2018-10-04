@@ -1,26 +1,22 @@
 package com.adithyaharun.footballclub.UI.Adapter
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.adithyaharun.footballclub.Model.Event
 import com.adithyaharun.footballclub.R
 import com.adithyaharun.footballclub.R.id.*
-import com.squareup.picasso.Picasso
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.sdk27.coroutines.onTouch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MainAdapter(private val events: List<Event>)
+class MainAdapter(private val context: Context?, private val events: List<Event>, private val listener: (Event) -> Unit)
     : RecyclerView.Adapter<TeamViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
@@ -28,7 +24,7 @@ class MainAdapter(private val events: List<Event>)
     }
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
-        holder.bindItem(events[position], position)
+        holder.bindItem(events[position], listener)
     }
 
     override fun getItemCount(): Int = events.size
@@ -44,7 +40,7 @@ class TeamUI : AnkoComponent<ViewGroup> {
                 textView {
                     id = R.id.match_time
                     backgroundColor = Color.rgb(230, 230, 230)
-                    verticalPadding = dip(8)
+                    verticalPadding = dip(4)
                     horizontalPadding = dip(16)
                 }.lparams{
                     width = matchParent
@@ -59,12 +55,12 @@ class TeamUI : AnkoComponent<ViewGroup> {
                     linearLayout {
                         lparams(width = 0, height = wrapContent, weight = 3f)
                         orientation = LinearLayout.VERTICAL
-                        verticalPadding = dip(8)
-                        horizontalPadding = dip(16)
+                        padding = dip(16)
 
                         textView {
                             id = R.id.team_home
                             textAlignment = View.TEXT_ALIGNMENT_TEXT_END
+                            textColor = Color.BLACK
                         }.lparams {
                             width = matchParent
                             height = wrapContent
@@ -73,6 +69,7 @@ class TeamUI : AnkoComponent<ViewGroup> {
                         textView {
                             id = R.id.score_home
                             textAlignment = View.TEXT_ALIGNMENT_TEXT_END
+                            textColor = Color.BLACK
                             textSize = 18f
                         }.lparams {
                             width = matchParent
@@ -83,6 +80,7 @@ class TeamUI : AnkoComponent<ViewGroup> {
                     textView {
                         text = "vs"
                         textAlignment = View.TEXT_ALIGNMENT_CENTER
+                        textColor = Color.BLACK
                         gravity = Gravity.CENTER_VERTICAL
                     }.lparams {
                         width = 0
@@ -93,11 +91,11 @@ class TeamUI : AnkoComponent<ViewGroup> {
                     linearLayout {
                         lparams(width = 0, height = wrapContent, weight = 3f)
                         orientation = LinearLayout.VERTICAL
-                        verticalPadding = dip(8)
-                        horizontalPadding = dip(16)
+                        padding = dip(16)
 
                         textView {
                             id = R.id.team_away
+                            textColor = Color.BLACK
                         }.lparams{
                             width = matchParent
                             height = wrapContent
@@ -106,6 +104,7 @@ class TeamUI : AnkoComponent<ViewGroup> {
                         textView {
                             id = R.id.score_away
                             textSize = 18f
+                            textColor = Color.BLACK
                         }.lparams{
                             width = matchParent
                             height = wrapContent
@@ -127,7 +126,7 @@ class TeamViewHolder(view: View) : RecyclerView.ViewHolder(view){
     private val sqlFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val humanFormatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.US)
 
-    fun bindItem(event: Event, position: Int) {
+    fun bindItem(event: Event, listener: (Event) -> Unit) {
         val matchDate = sqlFormatter.parse(event.dateEvent)
         tvMatchTime.text = humanFormatter.format(matchDate)
 
@@ -137,7 +136,16 @@ class TeamViewHolder(view: View) : RecyclerView.ViewHolder(view){
         tvScoreHome.text = event.intHomeScore.toString()
         tvScoreAway.text = event.intAwayScore.toString()
 
-        layoutMatch.onClick {
+        if (event.intHomeScore == null) {
+            tvScoreHome.visibility = View.GONE
+        }
+
+        if (event.intAwayScore == null) {
+            tvScoreAway.visibility = View.GONE
+        }
+
+        layoutMatch.setOnClickListener {
+            listener(event)
         }
     }
 }
