@@ -2,10 +2,11 @@ package com.adithyaharun.footballclub
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.view.*
+import android.support.v7.app.AppCompatActivity
+import android.view.Gravity
+import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -17,8 +18,6 @@ import com.adithyaharun.footballclub.UI.Presenter.DetailPresenter
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.*
-import org.jetbrains.anko.support.v4.onRefresh
-import org.jetbrains.anko.support.v4.swipeRefreshLayout
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -68,7 +67,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
 
     private fun setupLayout() {
         mainLayout = linearLayout {
-            lparams (width = matchParent, height = wrapContent)
+            lparams(width = matchParent, height = wrapContent)
             orientation = LinearLayout.VERTICAL
 
             eventDate = textView {
@@ -79,7 +78,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
             eventDate.setPadding(dip(16), dip(16), dip(16), dip(4))
 
             linearLayout {
-                lparams (width = matchParent, height = wrapContent)
+                lparams(width = matchParent, height = wrapContent)
                 orientation = LinearLayout.VERTICAL
 
                 // Team
@@ -128,7 +127,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
                             adjustViewBounds = true
                         }.lparams(width = matchParent, height = 160)
 
-                        awayName = textView{
+                        awayName = textView {
                             textAlignment = View.TEXT_ALIGNMENT_CENTER
                         }.lparams(width = matchParent, height = wrapContent)
                     }
@@ -141,7 +140,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
             }
 
             linearLayout {
-                lparams (width = matchParent, height = wrapContent)
+                lparams(width = matchParent, height = wrapContent)
                 orientation = LinearLayout.VERTICAL
 
                 // Yellow Cards
@@ -175,7 +174,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
             }
 
             linearLayout {
-                lparams (width = matchParent, height = wrapContent)
+                lparams(width = matchParent, height = wrapContent)
                 orientation = LinearLayout.VERTICAL
 
                 // Yellow Cards
