@@ -49,7 +49,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
         super.onCreate(savedInstanceState)
 
         // Get event ID.
-        val idEvent = intent.getStringExtra("id")
+        event = intent.getParcelableExtra("event")
 
         // Set title bar and back button.
         supportActionBar?.setTitle(R.string.match_detail)
@@ -58,11 +58,13 @@ class DetailActivity : AppCompatActivity(), DetailView {
         // Setup layout.
         setupLayout()
 
-        // Load data.
+        // Initialize presenter.
         val request = ApiRepository()
         val gson = Gson()
         presenter = DetailPresenter(this, request, gson)
-        presenter.getEvent(idEvent)
+
+        // Bind event data.
+        bindData()
     }
 
     private fun setupLayout() {
@@ -285,18 +287,6 @@ class DetailActivity : AppCompatActivity(), DetailView {
         } else {
             super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun showEvent(data: Event) {
-        if (data.idEvent == null) {
-            mainLayout.visibility = View.GONE
-            toast(getString(R.string.event_not_found))
-
-            return
-        }
-
-        event = data
-        bindData()
     }
 
     override fun showTeam(data: Team, type: String) {

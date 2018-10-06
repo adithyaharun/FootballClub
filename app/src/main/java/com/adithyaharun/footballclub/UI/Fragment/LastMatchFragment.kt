@@ -77,7 +77,7 @@ class LastMatchFragment : Fragment(), MainView {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = MainAdapter(context, events) {
-            startActivity(intentFor<DetailActivity>("id" to it.idEvent))
+            startActivity(intentFor<DetailActivity>("event" to it))
         }
 
         listEvent.adapter = adapter

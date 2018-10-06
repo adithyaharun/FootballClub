@@ -1,8 +1,10 @@
 package com.adithyaharun.footballclub.Model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Event (
 
 	@field:SerializedName("intHomeShots")
@@ -72,7 +74,7 @@ data class Event (
 	val strHomeFormation: String? = null,
 
 	@field:SerializedName("strMap")
-	val strMap: Any? = null,
+	val strMap: String? = null,
 
 	@field:SerializedName("idAwayTeam")
 	val idAwayTeam: String? = null,
@@ -81,19 +83,19 @@ data class Event (
 	val strAwayRedCards: String? = null,
 
 	@field:SerializedName("strBanner")
-	val strBanner: Any? = null,
+	val strBanner: String? = null,
 
 	@field:SerializedName("strFanart")
-	val strFanart: Any? = null,
+	val strFanart: String? = null,
 
 	@field:SerializedName("strDescriptionEN")
-	val strDescriptionEN: Any? = null,
+	val strDescriptionEN: String? = null,
 
 	@field:SerializedName("strResult")
-	val strResult: Any? = null,
+	val strResult: String? = null,
 
 	@field:SerializedName("strCircuit")
-	val strCircuit: Any? = null,
+	val strCircuit: String? = null,
 
 	@field:SerializedName("intAwayShots")
 	val intAwayShots: Int? = null,
@@ -157,4 +159,4 @@ data class Event (
 
 	@field:SerializedName("strPoster")
 	val strPoster: String? = null
-): Serializable
+): Parcelable

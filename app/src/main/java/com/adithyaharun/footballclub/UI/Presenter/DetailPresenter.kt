@@ -15,19 +15,6 @@ class DetailPresenter(private val view: DetailView,
                     private val apiRepository: ApiRepository,
                     private val gson: Gson) {
 
-    fun getEvent(id: String) {
-        doAsync {
-            val data = gson.fromJson(apiRepository
-                    .doRequest(TheSportsDBApi.getEvent(id)),
-                    EventResponse::class.java
-            )
-
-            uiThread {
-                view.showEvent(data.events?.get(0) as Event)
-            }
-        }
-    }
-
     fun getTeam(id: String?, type: String) {
         doAsync {
             val data = gson.fromJson(apiRepository
