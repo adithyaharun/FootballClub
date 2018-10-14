@@ -52,7 +52,7 @@ class FavoritePresenter(private val view: MainView,
             }
 
             database?.use {
-                val result = select("FAVORITE_EVENTS")g
+                val result = select("FAVORITE_EVENTS")
                 data = result.parseList(parser)
             }
 
