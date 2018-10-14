@@ -18,21 +18,20 @@ class FavoritePresenter(private val view: MainView,
             var data: List<Event>? = null
 
             val parser = rowParser { id: Int,
-                                     idEvent: String?,
-                                     dateEvent: String?,
-                                     idHomeTeam: String?,
-                                     idAwayTeam: String?,
-                                     strHomeTeam: String?,
-                                     strAwayTeam: String?,
-                                     intHomeScore: Int?,
-                                     intAwayScore: Int?,
+                                     idEvent: String,
+                                     dateEvent: String,
+                                     idHomeTeam: String,
+                                     idAwayTeam: String,
+                                     strHomeTeam: String,
+                                     strAwayTeam: String,
+                                     intHomeScore: String?,
+                                     intAwayScore: String?,
                                      strHomeGoalDetails: String?,
                                      strAwayGoalDetails: String?,
                                      strHomeYellowCards: String?,
                                      strAwayYellowCards: String?,
                                      strHomeRedCards: String?,
                                      strAwayRedCards: String? ->
-
                 Event(
                         id = id,
                         idEvent = idEvent,
@@ -41,8 +40,8 @@ class FavoritePresenter(private val view: MainView,
                         idAwayTeam = idAwayTeam,
                         strHomeTeam = strHomeTeam,
                         strAwayTeam = strAwayTeam,
-                        intHomeScore = intHomeScore,
-                        intAwayScore = intAwayScore,
+                        intHomeScore = intHomeScore?.toInt(),
+                        intAwayScore = intAwayScore?.toInt(),
                         strHomeGoalDetails = strHomeGoalDetails,
                         strAwayGoalDetails = strAwayGoalDetails,
                         strHomeYellowCards = strHomeYellowCards,
@@ -53,7 +52,7 @@ class FavoritePresenter(private val view: MainView,
             }
 
             database?.use {
-                val result = select("FAVORITE_EVENTS")
+                val result = select("FAVORITE_EVENTS")g
                 data = result.parseList(parser)
             }
 
