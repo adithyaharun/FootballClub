@@ -324,8 +324,8 @@ class DetailActivity : AppCompatActivity(), DetailView {
     }
 
     private fun bindData() {
-        presenter.getTeam(event?.idAwayTeam, "home")
-        presenter.getTeam(event?.idHomeTeam, "away")
+        presenter.getTeam(event?.idHomeTeam, "home")
+        presenter.getTeam(event?.idAwayTeam, "away")
 
         val matchDate = sqlFormatter.parse(event?.dateEvent)
         eventDate.text = humanFormatter.format(matchDate)
