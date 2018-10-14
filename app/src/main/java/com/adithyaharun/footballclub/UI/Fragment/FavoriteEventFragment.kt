@@ -1,6 +1,5 @@
 package com.adithyaharun.footballclub.UI.Fragment
 
-
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -11,13 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.adithyaharun.footballclub.DetailActivity
+import com.adithyaharun.footballclub.Misc.database
 import com.adithyaharun.footballclub.Model.Event
-import com.adithyaharun.footballclub.NetworkService.ApiRepository
-import com.adithyaharun.footballclub.R
+import com.adithyaharun.footballclub.R.color.colorAccent
 import com.adithyaharun.footballclub.UI.Adapter.MainAdapter
 import com.adithyaharun.footballclub.UI.MainView
-import com.adithyaharun.footballclub.UI.Presenter.MainPresenter
-import com.google.gson.Gson
+import com.adithyaharun.footballclub.UI.Presenter.FavoritePresenter
 import org.jetbrains.anko.linearLayout
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
@@ -30,14 +28,19 @@ import org.jetbrains.anko.wrapContent
 
 /**
  * A simple [Fragment] subclass.
+ * Activities that contain this fragment must implement the
+ * [BlankFragment.OnFragmentInteractionListener] interface
+ * to handle interaction events.
+ * Use the [BlankFragment.newInstance] factory method to
+ * create an instance of this fragment.
  *
  */
-class NextMatchFragment : Fragment(), MainView {
+class FavoriteEventFragment : Fragment(), MainView {
     private var events: MutableList<Event> = mutableListOf()
 
     private lateinit var listEvent: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
-    private lateinit var presenter: MainPresenter
+    private lateinit var presenter: FavoritePresenter
     private lateinit var adapter: MainAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,7 +50,7 @@ class NextMatchFragment : Fragment(), MainView {
                 orientation = LinearLayout.VERTICAL
 
                 swipeRefresh = swipeRefreshLayout {
-                    setColorSchemeResources(R.color.colorAccent,
+                    setColorSchemeResources(colorAccent,
                             android.R.color.holo_green_light,
                             android.R.color.holo_orange_light,
                             android.R.color.holo_red_light)
@@ -74,16 +77,12 @@ class NextMatchFragment : Fragment(), MainView {
 
         listEvent.adapter = adapter
 
-        val request = ApiRepository()
-        val gson = Gson()
-        presenter = MainPresenter(this, request, gson)
-
         swipeRefresh.onRefresh {
-            presenter.getNextMatches()
+            presenter.getFavoriteEvents()
         }
 
-        swipeRefresh.isRefreshing = true
-        presenter.getNextMatches()
+        presenter = FavoritePresenter(this, context?.database)
+        presenter.getFavoriteEvents()
     }
 
     override fun showLoading() {
@@ -100,5 +99,4 @@ class NextMatchFragment : Fragment(), MainView {
         events.addAll(data)
         adapter.notifyDataSetChanged()
     }
-
 }

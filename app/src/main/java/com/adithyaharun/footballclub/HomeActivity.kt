@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import com.adithyaharun.footballclub.Model.Event
+import com.adithyaharun.footballclub.UI.Fragment.FavoriteEventFragment
 import com.adithyaharun.footballclub.UI.Fragment.LastMatchFragment
 import com.adithyaharun.footballclub.UI.Fragment.NextMatchFragment
 import kotlinx.android.synthetic.main.activity_home.*
@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 class HomeActivity : AppCompatActivity() {
     private val lastMatchFragment = LastMatchFragment()
     private val nextMatchFragment = NextMatchFragment()
-    private val fragmentManager = supportFragmentManager
+    private val favoriteFragment = FavoriteEventFragment()
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -24,15 +24,19 @@ class HomeActivity : AppCompatActivity() {
                 showFragment(nextMatchFragment)
                 return@OnNavigationItemSelectedListener true
             }
+            R.id.navigation_favorite_match -> {
+                showFragment(favoriteFragment)
+                return@OnNavigationItemSelectedListener true
+            }
         }
         false
     }
 
     private fun showFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_holder, fragment)
-            .addToBackStack(null)
-            .commit()
+                .replace(R.id.fragment_holder, fragment)
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

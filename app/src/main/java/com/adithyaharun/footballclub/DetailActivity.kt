@@ -1,15 +1,18 @@
 package com.adithyaharun.footballclub
 
+import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.adithyaharun.footballclub.Misc.database
 import com.adithyaharun.footballclub.Model.Event
 import com.adithyaharun.footballclub.Model.Team
 import com.adithyaharun.footballclub.NetworkService.ApiRepository
@@ -18,6 +21,7 @@ import com.adithyaharun.footballclub.UI.Presenter.DetailPresenter
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.*
+import org.jetbrains.anko.db.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,9 +42,11 @@ class DetailActivity : AppCompatActivity(), DetailView {
     private lateinit var homeGoal: TextView
     private lateinit var awayGoal: TextView
 
+    private var detailMenu: Menu? = null
     private var event: Event? = null
     private var homeTeam: Team? = null
     private var awayTeam: Team? = null
+    private var addedToFavorites: Boolean = false
 
     private val sqlFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val humanFormatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.US)
@@ -65,6 +71,81 @@ class DetailActivity : AppCompatActivity(), DetailView {
 
         // Bind event data.
         bindData()
+        setFavoriteState()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu to use in the action bar
+        val inflater = menuInflater
+        inflater.inflate(R.menu.detail_match, menu)
+
+        val menuFavorites = menu.findItem(R.id.navigation_add_to_favorites)
+
+        if (addedToFavorites) {
+            menuFavorites.setIcon(R.drawable.ic_star_black_24dp)
+        } else {
+            menuFavorites.setIcon(R.drawable.ic_star_border_black_24dp)
+        }
+
+        detailMenu = menu
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun addToFavorites(): Boolean {
+        try {
+            database.use {
+                insert(Event.TABLE_EVENT_FAVORITES,
+                        Event.EVENT_ID to event?.idEvent,
+                        Event.EVENT_DATE to event?.dateEvent,
+                        Event.EVENT_HOME_TEAM_ID to event?.idHomeTeam,
+                        Event.EVENT_AWAY_TEAM_ID to event?.idAwayTeam,
+                        Event.EVENT_HOME_TEAM to event?.strHomeTeam,
+                        Event.EVENT_AWAY_TEAM to event?.strAwayTeam,
+                        Event.EVENT_HOME_SCORE to event?.intHomeScore,
+                        Event.EVENT_AWAY_SCORE to event?.intAwayScore,
+                        Event.EVENT_HOME_GOALS to event?.strHomeGoalDetails,
+                        Event.EVENT_AWAY_GOALS to event?.strAwayGoalDetails,
+                        Event.EVENT_HOME_YELLOW_CARDS to event?.strHomeYellowCards,
+                        Event.EVENT_AWAY_YELLOW_CARDS to event?.strAwayYellowCards,
+                        Event.EVENT_HOME_RED_CARDS to event?.strHomeRedCards,
+                        Event.EVENT_AWAY_RED_CARDS to event?.strAwayRedCards
+                )
+            }
+
+            toast(R.string.added_to_favorites)
+        } catch (e: SQLiteConstraintException) {
+            toast(e.localizedMessage)
+        }
+
+        return true
+    }
+
+    private fun removeFromFavorites(): Boolean {
+        try {
+            database.use {
+                delete(Event.TABLE_EVENT_FAVORITES,
+                        "EVENT_ID = {id}",
+                        "id" to event?.idEvent!!
+                )
+            }
+            toast(R.string.removed_from_favorites)
+        } catch (e: SQLiteConstraintException) {
+            toast(R.string.removed_from_favorites)
+        }
+        return true
+    }
+
+    private fun setFavoriteState() {
+        database.use {
+            select("FAVORITE_EVENTS", "EVENT_ID")
+                    .whereArgs("EVENT_ID = {id}", "id" to event?.idEvent.toString())
+                    .exec {
+                        val parsed = parseOpt(StringParser)
+
+                        addedToFavorites = (parsed != null)
+                        onPrepareOptionsMenu(detailMenu)
+                    }
+        }
     }
 
     private fun setupLayout() {
@@ -281,11 +362,27 @@ class DetailActivity : AppCompatActivity(), DetailView {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return if (item?.itemId == android.R.id.home) {
-            finish()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+
+            R.id.navigation_add_to_favorites -> {
+                if (addedToFavorites) {
+                    item.setIcon(R.drawable.ic_star_border_black_24dp)
+                    removeFromFavorites()
+                } else {
+                    item.setIcon(R.drawable.ic_star_black_24dp)
+                    addToFavorites()
+                }
+
+                addedToFavorites = !addedToFavorites
+
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
