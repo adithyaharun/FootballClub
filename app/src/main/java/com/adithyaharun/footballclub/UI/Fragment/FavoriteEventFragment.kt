@@ -93,10 +93,10 @@ class FavoriteEventFragment : Fragment(), MainView {
         swipeRefresh.isRefreshing = false
     }
 
-    override fun showMatchList(data: List<Event>) {
+    override fun showMatchList(data: List<Event>?) {
         swipeRefresh.isRefreshing = false
         events.clear()
-        events.addAll(data)
+        data?.let { events.addAll(it) }
         adapter.notifyDataSetChanged()
     }
 }

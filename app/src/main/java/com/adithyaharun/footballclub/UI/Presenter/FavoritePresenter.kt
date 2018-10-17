@@ -56,8 +56,6 @@ class FavoritePresenter(private val view: MainView,
                 data = result.parseList(parser)
             }
 
-            Log.d("FOOTBALL", data.toString())
-
             uiThread {
                 view.hideLoading()
 

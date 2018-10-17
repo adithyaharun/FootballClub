@@ -1,30 +1,25 @@
 package com.adithyaharun.footballclub.UI.Presenter
 
-import com.adithyaharun.footballclub.Model.Event
-import com.adithyaharun.footballclub.Model.EventResponse
 import com.adithyaharun.footballclub.Model.Team
-import com.adithyaharun.footballclub.Model.TeamResponse
-import com.adithyaharun.footballclub.NetworkService.ApiRepository
-import com.adithyaharun.footballclub.NetworkService.TheSportsDBApi
+import com.adithyaharun.footballclub.NetworkService.DataRepository
 import com.adithyaharun.footballclub.UI.DetailView
-import com.google.gson.Gson
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 class DetailPresenter(private val view: DetailView,
-                    private val apiRepository: ApiRepository,
-                    private val gson: Gson) {
+                    private val apiRepository: DataRepository) {
 
-    fun getTeam(id: String?, type: String) {
+    fun getTeam(id: String, type: String) {
         doAsync {
-            val data = gson.fromJson(apiRepository
-                    .doRequest(TheSportsDBApi.getTeam(id)),
-                    TeamResponse::class.java
-            )
-
-            uiThread {
-                view.showTeam(data.teams?.get(0) as Team, type)
-            }
+            apiRepository.getTeamDetail(id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            { result ->
+                                view.showTeam(result.teams?.get(0) as Team, type)
+                            }
+                    )
         }
     }
 }

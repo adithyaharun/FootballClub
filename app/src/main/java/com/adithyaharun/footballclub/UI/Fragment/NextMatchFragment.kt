@@ -12,12 +12,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.adithyaharun.footballclub.DetailActivity
 import com.adithyaharun.footballclub.Model.Event
-import com.adithyaharun.footballclub.NetworkService.ApiRepository
+import com.adithyaharun.footballclub.NetworkService.DataRepository
 import com.adithyaharun.footballclub.R
 import com.adithyaharun.footballclub.UI.Adapter.MainAdapter
 import com.adithyaharun.footballclub.UI.MainView
 import com.adithyaharun.footballclub.UI.Presenter.MainPresenter
-import com.google.gson.Gson
 import org.jetbrains.anko.linearLayout
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
@@ -74,9 +73,8 @@ class NextMatchFragment : Fragment(), MainView {
 
         listEvent.adapter = adapter
 
-        val request = ApiRepository()
-        val gson = Gson()
-        presenter = MainPresenter(this, request, gson)
+        val request = DataRepository.create()
+        presenter = MainPresenter(this, request)
 
         swipeRefresh.onRefresh {
             presenter.getNextMatches()
@@ -94,10 +92,10 @@ class NextMatchFragment : Fragment(), MainView {
         swipeRefresh.isRefreshing = false
     }
 
-    override fun showMatchList(data: List<Event>) {
+    override fun showMatchList(data: List<Event>?) {
         swipeRefresh.isRefreshing = false
         events.clear()
-        events.addAll(data)
+        data?.let { events.addAll(it) }
         adapter.notifyDataSetChanged()
     }
 

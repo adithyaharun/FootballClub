@@ -1,11 +1,14 @@
 package com.adithyaharun.footballclub.Misc
 
-import android.view.View
+import java.text.SimpleDateFormat
+import java.util.*
 
-fun View.visible() {
-    visibility = View.VISIBLE
-}
+object Utils {
+    fun toHumanDate(string: String): String {
+        val sqlFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val humanFormatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.US)
+        val toDateObject = sqlFormatter.parse(string)
 
-fun View.invisible() {
-    visibility = View.INVISIBLE
+        return humanFormatter.format(toDateObject)
+    }
 }

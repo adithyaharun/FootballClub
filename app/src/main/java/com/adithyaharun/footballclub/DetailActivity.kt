@@ -12,18 +12,16 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.adithyaharun.footballclub.Misc.Utils
 import com.adithyaharun.footballclub.Misc.database
 import com.adithyaharun.footballclub.Model.Event
 import com.adithyaharun.footballclub.Model.Team
-import com.adithyaharun.footballclub.NetworkService.ApiRepository
+import com.adithyaharun.footballclub.NetworkService.DataRepository
 import com.adithyaharun.footballclub.UI.DetailView
 import com.adithyaharun.footballclub.UI.Presenter.DetailPresenter
-import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.*
 import org.jetbrains.anko.db.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class DetailActivity : AppCompatActivity(), DetailView {
     private lateinit var presenter: DetailPresenter
@@ -48,9 +46,6 @@ class DetailActivity : AppCompatActivity(), DetailView {
     private var awayTeam: Team? = null
     private var addedToFavorites: Boolean = false
 
-    private val sqlFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-    private val humanFormatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.US)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -65,9 +60,8 @@ class DetailActivity : AppCompatActivity(), DetailView {
         setupLayout()
 
         // Initialize presenter.
-        val request = ApiRepository()
-        val gson = Gson()
-        presenter = DetailPresenter(this, request, gson)
+        val request = DataRepository.create()
+        presenter = DetailPresenter(this, request)
 
         // Bind event data.
         bindData()
@@ -324,11 +318,10 @@ class DetailActivity : AppCompatActivity(), DetailView {
     }
 
     private fun bindData() {
-        presenter.getTeam(event?.idHomeTeam, "home")
-        presenter.getTeam(event?.idAwayTeam, "away")
+        event?.idHomeTeam?.let { presenter.getTeam(it, "home") }
+        event?.idAwayTeam?.let { presenter.getTeam(it, "away") }
 
-        val matchDate = sqlFormatter.parse(event?.dateEvent)
-        eventDate.text = humanFormatter.format(matchDate)
+        eventDate.text = Utils.toHumanDate(event?.dateEvent!!)
 
         homeName.text = event?.strHomeTeam
         homeRedCard.text = event?.strHomeRedCards?.replace(";", "\n")?.replace("':", "': ")
