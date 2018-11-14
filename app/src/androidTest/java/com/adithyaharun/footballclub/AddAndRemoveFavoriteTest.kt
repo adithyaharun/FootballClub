@@ -1,6 +1,5 @@
 package com.adithyaharun.footballclub
 
-
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.matcher.ViewMatchers.*
@@ -28,6 +27,8 @@ class AddAndRemoveFavoriteTest {
 
     @Test
     fun homeActivityTest() {
+        Thread.sleep(5000)
+
         val _LinearLayout = onView(
                 allOf(withId(R.id.match_layout),
                         childAtPosition(

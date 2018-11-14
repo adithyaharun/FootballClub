@@ -71,7 +71,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
         val inflater = menuInflater
-        inflater.inflate(R.menu.detail_match, menu)
+        inflater.inflate(R.menu.detail_activity, menu)
 
         val menuFavorites = menu.findItem(R.id.navigation_add_to_favorites)
 
