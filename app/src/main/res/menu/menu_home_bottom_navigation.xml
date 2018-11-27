@@ -12,6 +12,11 @@
         android:title="@string/title_next_match" />
 
     <item
+        android:id="@+id/navigation_teams"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="@string/title_teams" />
+
+    <item
         android:id="@+id/navigation_favorite_match"
         android:icon="@drawable/ic_stars_black_24dp"
         android:title="@string/title_favorites" />

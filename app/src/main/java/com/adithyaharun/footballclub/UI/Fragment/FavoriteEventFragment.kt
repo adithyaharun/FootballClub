@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.adithyaharun.footballclub.DetailActivity
+import com.adithyaharun.footballclub.MatchActivity
 import com.adithyaharun.footballclub.Misc.database
 import com.adithyaharun.footballclub.Model.Event
 import com.adithyaharun.footballclub.R.color.colorAccent
@@ -72,7 +72,7 @@ class FavoriteEventFragment : Fragment(), MainView {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = MainAdapter(context, events) {
-            startActivity(intentFor<DetailActivity>("event" to it))
+            startActivity(intentFor<MatchActivity>("event" to it))
         }
 
         listEvent.adapter = adapter
