@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso
 import org.jetbrains.anko.*
 import org.jetbrains.anko.db.*
 
-class DetailActivity : AppCompatActivity(), DetailView {
+class MatchActivity : AppCompatActivity(), DetailView {
     private lateinit var presenter: DetailPresenter
     private lateinit var mainLayout: LinearLayout
     private lateinit var eventDate: TextView
@@ -71,7 +71,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
         val inflater = menuInflater
-        inflater.inflate(R.menu.detail_activity, menu)
+        inflater.inflate(R.menu.menu_event_detail_toolbar, menu)
 
         val menuFavorites = menu.findItem(R.id.navigation_add_to_favorites)
 
@@ -158,7 +158,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
                 lparams(width = matchParent, height = wrapContent)
                 orientation = LinearLayout.VERTICAL
 
-                // Team
+                // TeamView
                 linearLayout {
                     lparams(width = matchParent, height = wrapContent)
                     orientation = LinearLayout.HORIZONTAL
@@ -348,9 +348,9 @@ class DetailActivity : AppCompatActivity(), DetailView {
 
     private fun bindTeam(type: String) {
         if (type == "home") {
-            Picasso.get().load(homeTeam?.teamBadge).into(homeImage)
+            Picasso.get().load(homeTeam?.strTeamBadge).into(homeImage)
         } else {
-            Picasso.get().load(awayTeam?.teamBadge).into(awayImage)
+            Picasso.get().load(awayTeam?.strTeamBadge).into(awayImage)
         }
     }
 

@@ -2,17 +2,11 @@
     <string name="app_name">Football Club</string>
     <array name="league_name">
         <item>English Premier League</item>
+        <item>American Major League Soccer</item>
+        <item>Spanish La Liga</item>
         <item>German Bundesliga</item>
         <item>Italian Serie A</item>
         <item>French Ligue 1</item>
-        <item>Spanish La Liga</item>
-    </array>
-    <array name="league_id">
-        <item>4328</item>
-        <item>4331</item>
-        <item>4332</item>
-        <item>4334</item>
-        <item>4335</item>
     </array>
     <string name="title_last_match">Last Match</string>
     <string name="title_next_match">Next Match</string>
@@ -31,4 +25,12 @@
     <string name="add_to_calendar">Add to Calendar</string>
     <string name="title_match">Matches</string>
     <string name="title_teams">Teams</string>
+    <string name="title_activity_team">Team Activity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_players">Players</string>
+    <string name="title_team_details">Details</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="team_badge">Team Badge</string>
 </resources>

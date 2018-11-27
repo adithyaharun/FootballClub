@@ -11,11 +11,14 @@ import retrofit2.http.Query
 
 interface DataRepository {
 
-    @GET("eventspastleague.php?id=4328")
-    fun getPrevEvent():Observable<EventResponse>
+    @GET("eventspastleague.php")
+    fun getPrevEvent(@Query("id") id: String):Observable<EventResponse>
 
-    @GET("eventsnextleague.php?id=4328")
-    fun getNextEvent():Observable<EventResponse>
+    @GET("eventsnextleague.php")
+    fun getNextEvent(@Query("id") id: String):Observable<EventResponse>
+
+    @GET("lookup_all_teams.php")
+    fun getTeams(@Query("id") id: String):Observable<TeamResponse>
 
     @GET("lookupteam.php")
     fun getTeamDetail(@Query("id") id: String):Observable<TeamResponse>

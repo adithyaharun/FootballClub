@@ -10,7 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.adithyaharun.footballclub.DetailActivity
+import com.adithyaharun.footballclub.MatchActivity
+import com.adithyaharun.footballclub.HomeActivity
 import com.adithyaharun.footballclub.Model.Event
 import com.adithyaharun.footballclub.NetworkService.DataRepository
 import com.adithyaharun.footballclub.R
@@ -67,8 +68,11 @@ class NextMatchFragment : Fragment(), MainView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val parentActivity = activity as HomeActivity
+        val leagueId = parentActivity.leagueIds[parentActivity.selectedLeague]
+
         adapter = MainAdapter(context, events) {
-            startActivity(intentFor<DetailActivity>("event" to it))
+            startActivity(intentFor<MatchActivity>("event" to it))
         }
 
         listEvent.adapter = adapter
@@ -77,11 +81,11 @@ class NextMatchFragment : Fragment(), MainView {
         presenter = MainPresenter(this, request)
 
         swipeRefresh.onRefresh {
-            presenter.getNextMatches()
+            presenter.getNextMatches(leagueId)
         }
 
         swipeRefresh.isRefreshing = true
-        presenter.getNextMatches()
+        presenter.getNextMatches(leagueId)
     }
 
     override fun showLoading() {
