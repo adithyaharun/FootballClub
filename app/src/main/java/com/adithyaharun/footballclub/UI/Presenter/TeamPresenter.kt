@@ -1,6 +1,8 @@
 package com.adithyaharun.footballclub.UI.Presenter
 
+import android.util.Log
 import com.adithyaharun.footballclub.Model.Event
+import com.adithyaharun.footballclub.Model.Player
 import com.adithyaharun.footballclub.Model.Team
 import com.adithyaharun.footballclub.NetworkService.DataRepository
 import com.adithyaharun.footballclub.UI.MainView

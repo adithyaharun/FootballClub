@@ -1,29 +1,35 @@
 package com.adithyaharun.footballclub
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.AttributeSet
 import android.view.MenuItem
-import android.widget.TextView
+import android.view.View
 import com.adithyaharun.footballclub.Model.Team
 import com.adithyaharun.footballclub.UI.Fragment.TeamDetailFragment
-import com.squareup.picasso.Picasso
+import com.adithyaharun.footballclub.UI.Fragment.TeamPlayersFragment
+import com.adithyaharun.footballclub.UI.Presenter.TeamPresenter
 import kotlinx.android.synthetic.main.activity_team.*
-import kotlinx.android.synthetic.main.content_team.*
-import kotlinx.android.synthetic.main.item_teams.*
-import org.jetbrains.anko.find
 
 class TeamActivity : AppCompatActivity() {
     private val teamDetailFragment = TeamDetailFragment()
+    private val teamPlayersFragment = TeamPlayersFragment()
+    var teamId: String? = null
 
     lateinit var team: Team
+    lateinit var presenter: TeamPresenter
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_team_details -> {
                 showFragment(teamDetailFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_team_players -> {
+                showFragment(teamPlayersFragment)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -35,9 +41,11 @@ class TeamActivity : AppCompatActivity() {
         setContentView(R.layout.activity_team)
 
         team = intent.getParcelableExtra("team")
+        teamId = team.idTeam
+
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         setSupportActionBar(toolbar)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = team.strTeam

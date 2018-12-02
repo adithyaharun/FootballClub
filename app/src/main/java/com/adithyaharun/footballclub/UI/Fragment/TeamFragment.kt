@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.adithyaharun.footballclub.HomeActivity
+import com.adithyaharun.footballclub.Model.Player
 import com.adithyaharun.footballclub.Model.Team
 import com.adithyaharun.footballclub.NetworkService.DataRepository
 import com.adithyaharun.footballclub.R

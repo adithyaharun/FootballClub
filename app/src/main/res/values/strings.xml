@@ -33,4 +33,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="team_badge">Team Badge</string>
+    <string name="player_details">Details</string>
+    <string name="description">Description</string>
+    <string name="nationality">Nationality</string>
+    <string name="gender">Gender</string>
+    <string name="position">Position</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
 </resources>

@@ -83,7 +83,6 @@ class HomeActivity : AppCompatActivity() {
         showFragment(lastMatchFragment)
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
         val inflater = menuInflater

@@ -1,6 +1,7 @@
 package com.adithyaharun.footballclub.NetworkService
 
 import com.adithyaharun.footballclub.Model.EventResponse
+import com.adithyaharun.footballclub.Model.PlayerResponse
 import com.adithyaharun.footballclub.Model.TeamResponse
 import io.reactivex.Observable
 import retrofit2.Retrofit
@@ -17,14 +18,17 @@ interface DataRepository {
     @GET("eventsnextleague.php")
     fun getNextEvent(@Query("id") id: String):Observable<EventResponse>
 
+    @GET("lookupevent.php")
+    fun getEventDetail(@Query("id") id: String):Observable<EventResponse>
+
     @GET("lookup_all_teams.php")
     fun getTeams(@Query("id") id: String):Observable<TeamResponse>
 
     @GET("lookupteam.php")
     fun getTeamDetail(@Query("id") id: String):Observable<TeamResponse>
 
-    @GET("lookupevent.php")
-    fun getEventDetail(@Query("id") id: String):Observable<EventResponse>
+    @GET("lookup_all_players.php")
+    fun getPlayers(@Query("id") id: String):Observable<PlayerResponse>
 
 
     companion object {
