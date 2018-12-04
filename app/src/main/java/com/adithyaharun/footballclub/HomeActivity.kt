@@ -9,42 +9,48 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.ListView
-import com.adithyaharun.footballclub.UI.Fragment.FavoriteEventFragment
-import com.adithyaharun.footballclub.UI.Fragment.LastMatchFragment
-import com.adithyaharun.footballclub.UI.Fragment.NextMatchFragment
-import com.adithyaharun.footballclub.UI.Fragment.TeamFragment
+import com.adithyaharun.footballclub.UI.Fragment.*
 import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.find
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.startActivity
 
 class HomeActivity : AppCompatActivity() {
     private val lastMatchFragment = LastMatchFragment()
     private val nextMatchFragment = NextMatchFragment()
     private val teamFragment = TeamFragment()
-    private val favoriteFragment = FavoriteEventFragment()
+    private val favoriteEventFragment = FavoriteEventFragment()
+    private val favoriteTeamFragment = FavoriteTeamFragment()
     private var currentFragment: Fragment? = null
     private var leagueDialog: AlertDialog? = null
 
-    var leagues: Array<String> = arrayOf<String>()
-    var leagueIds: Array<String> = arrayOf<String>("4328", "4346", "4335", "4331", "4332", "4334")
+    var leagues: Array<String> = arrayOf()
+    var leagueIds: Array<String> = arrayOf("4328", "4346", "4335", "4331", "4332", "4334")
     var selectedLeague = 0
+    var state = "match"
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_last_match -> {
                 showFragment(lastMatchFragment)
+                state = "match"
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_next_match -> {
                 showFragment(nextMatchFragment)
+                state = "match"
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_teams -> {
                 showFragment(teamFragment)
+                state = "team"
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_favorite_match -> {
-                showFragment(favoriteFragment)
+            R.id.navigation_event_favorites -> {
+                showFragment(favoriteEventFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_team_favorites -> {
+                showFragment(favoriteTeamFragment)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -74,7 +80,7 @@ class HomeActivity : AppCompatActivity() {
         leagues = resources.getStringArray(R.array.league_name)
 
         // Set subtitle.
-        supportActionBar?.setSubtitle(leagues[selectedLeague])
+        supportActionBar?.subtitle = leagues[selectedLeague]
 
         // Create league dialog.
         createDialog()
@@ -95,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
         if (item?.itemId == R.id.navigation_league) {
             leagueDialog?.show()
         } else if (item?.itemId == R.id.navigation_search) {
-            toast("Search")
+            startActivity<SearchActivity>("state" to state)
         }
 
         return super.onOptionsItemSelected(item)
@@ -123,7 +129,7 @@ class HomeActivity : AppCompatActivity() {
         listView.setItemChecked(0, true)
         listView.setOnItemClickListener { parent, view, position, id ->
             selectedLeague = position
-            supportActionBar?.setSubtitle(leagues[selectedLeague])
+            supportActionBar?.subtitle = leagues[selectedLeague]
 
             refreshFragment(currentFragment)
 

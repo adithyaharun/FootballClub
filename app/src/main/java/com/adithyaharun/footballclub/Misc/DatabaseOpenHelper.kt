@@ -37,11 +37,22 @@ class DatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "FootballD
                 "EVENT_HOME_RED_CARDS" to TEXT,
                 "EVENT_AWAY_RED_CARDS" to TEXT
         )
+
+        // Here you create tables
+        db.createTable("FAVORITE_TEAMS", true,
+                "ID_" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                "TEAM_ID" to TEXT + UNIQUE,
+                "TEAM_NAME" to TEXT,
+                "TEAM_BADGE" to TEXT,
+                "TEAM_STADIUM" to TEXT,
+                "TEAM_STADIUM_LOCATION" to TEXT
+        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // Here you can upgrade tables, as usual
         db.dropTable("FAVORITE_EVENTS", true)
+        db.dropTable("FAVORITE_TEAMS", true)
     }
 }
 

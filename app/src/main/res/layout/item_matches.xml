@@ -25,6 +25,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="viewEnd"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:text="@string/label"
                     android:textColor="#000000"
                     android:id="@+id/team_home" />
@@ -74,6 +76,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:text="@string/label"
                     android:textColor="#000000"
                     android:id="@+id/team_away" />

@@ -17,8 +17,13 @@
         android:title="@string/title_teams" />
 
     <item
-        android:id="@+id/navigation_favorite_match"
+        android:id="@+id/navigation_event_favorites"
         android:icon="@drawable/ic_stars_black_24dp"
-        android:title="@string/title_favorites" />
+        android:title="@string/title_event_favorites" />
+
+    <item
+        android:id="@+id/navigation_team_favorites"
+        android:icon="@drawable/ic_stars_black_24dp"
+        android:title="@string/title_team_favorites" />
 
 </menu>

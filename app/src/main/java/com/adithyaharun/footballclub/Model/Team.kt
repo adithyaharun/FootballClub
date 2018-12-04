@@ -6,6 +6,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Team(
+        val id: Int? = null,
+
         @field:SerializedName("intStadiumCapacity")
         val intStadiumCapacity: String? = null,
 
@@ -119,4 +121,14 @@ data class Team(
 
         @field:SerializedName("strKeywords")
         val strKeywords: String? = null
-): Parcelable
+): Parcelable {
+        companion object {
+                const val TABLE_TEAM_FAVORITES: String = "FAVORITE_TEAMS"
+                const val ID: String = "ID_"
+                const val TEAM_ID: String = "TEAM_ID"
+                const val TEAM_NAME: String = "TEAM_NAME"
+                const val TEAM_BADGE: String = "TEAM_BADGE"
+                const val TEAM_STADIUM: String = "TEAM_STADIUM"
+                const val TEAM_STADIUM_LOCATION: String = "TEAM_STADIUM_LOCATION"
+        }
+}

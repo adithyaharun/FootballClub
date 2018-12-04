@@ -18,12 +18,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".MatchActivity" />
-        <activity android:name=".UI.TeamActivity" />
         <activity
             android:name=".TeamActivity"
             android:label="@string/title_activity_team"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PlayerActivity"></activity>
+        <activity android:name=".PlayerActivity" />
+        <activity android:name=".SearchActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
     </application>
 
 </manifest>

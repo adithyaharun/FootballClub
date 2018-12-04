@@ -9,8 +9,8 @@ import org.jetbrains.anko.db.select
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class FavoritePresenter(private val view: MainView,
-                        private val database: DatabaseOpenHelper?) {
+class FavoriteEventPresenter(private val view: MainView,
+                             private val database: DatabaseOpenHelper?) {
 
     fun getFavoriteEvents() {
         view.showLoading()

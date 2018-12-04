@@ -38,7 +38,7 @@ class BottomNavigationTest {
         bottomNavigationItemView.perform(click())
 
         val bottomNavigationItemView2 = onView(
-                allOf(withId(R.id.navigation_favorite_match), withContentDescription("Favorites"),
+                allOf(withId(R.id.navigation_favorites), withContentDescription("Favorites"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.navigation),

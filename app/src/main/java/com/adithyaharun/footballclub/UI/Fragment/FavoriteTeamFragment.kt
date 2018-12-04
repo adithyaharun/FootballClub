@@ -9,14 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.adithyaharun.footballclub.MatchActivity
 import com.adithyaharun.footballclub.Misc.database
-import com.adithyaharun.footballclub.Model.Event
+import com.adithyaharun.footballclub.Model.Team
 import com.adithyaharun.footballclub.R
-import com.adithyaharun.footballclub.R.color.colorAccent
-import com.adithyaharun.footballclub.UI.Adapter.MainAdapter
-import com.adithyaharun.footballclub.UI.MainView
-import com.adithyaharun.footballclub.UI.Presenter.FavoriteEventPresenter
+import com.adithyaharun.footballclub.TeamActivity
+import com.adithyaharun.footballclub.UI.Adapter.TeamAdapter
+import com.adithyaharun.footballclub.UI.Presenter.FavoriteTeamPresenter
+import com.adithyaharun.footballclub.UI.TeamView
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
@@ -28,18 +27,18 @@ import org.jetbrains.anko.support.v4.swipeRefreshLayout
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
  * [BlankFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
+ * to handle interaction teams.
  * Use the [BlankFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class FavoriteEventFragment : Fragment(), MainView {
-    private var events: MutableList<Event> = mutableListOf()
+class FavoriteTeamFragment : Fragment(), TeamView {
+    private var teams: MutableList<Team> = mutableListOf()
 
     private lateinit var list: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
-    private lateinit var presenter: FavoriteEventPresenter
-    private lateinit var adapter: MainAdapter
+    private lateinit var presenter: FavoriteTeamPresenter
+    private lateinit var adapter: TeamAdapter
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,7 +48,7 @@ class FavoriteEventFragment : Fragment(), MainView {
                 orientation = LinearLayout.VERTICAL
 
                 swipeRefresh = swipeRefreshLayout {
-                    setColorSchemeResources(colorAccent,
+                    setColorSchemeResources(R.color.colorAccent,
                             android.R.color.holo_green_light,
                             android.R.color.holo_orange_light,
                             android.R.color.holo_red_light)
@@ -70,18 +69,18 @@ class FavoriteEventFragment : Fragment(), MainView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = MainAdapter(context, events) {
-            startActivity(intentFor<MatchActivity>("event" to it))
+        adapter = TeamAdapter(context, teams) {
+            startActivity(intentFor<TeamActivity>("team" to it))
         }
 
         list.adapter = adapter
 
         swipeRefresh.onRefresh {
-            presenter.getFavoriteEvents()
+            presenter.getFavoriteTeams()
         }
 
-        presenter = FavoriteEventPresenter(this, context?.database)
-        presenter.getFavoriteEvents()
+        presenter = FavoriteTeamPresenter(this, context?.database)
+        presenter.getFavoriteTeams()
     }
 
     override fun showLoading() {
@@ -92,10 +91,10 @@ class FavoriteEventFragment : Fragment(), MainView {
         swipeRefresh.isRefreshing = false
     }
 
-    override fun showMatchList(data: List<Event>?) {
+    override fun showTeams(data: List<Team>?) {
         swipeRefresh.isRefreshing = false
-        events.clear()
-        data?.let { events.addAll(it) }
+        teams.clear()
+        data?.let { teams.addAll(it) }
         adapter.notifyDataSetChanged()
     }
 }

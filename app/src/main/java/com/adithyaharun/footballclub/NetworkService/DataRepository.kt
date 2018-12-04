@@ -30,6 +30,12 @@ interface DataRepository {
     @GET("lookup_all_players.php")
     fun getPlayers(@Query("id") id: String):Observable<PlayerResponse>
 
+    @GET("searchevents.php")
+    fun searchEvents(@Query("e") query: String):Observable<EventResponse>
+
+    @GET("searchteams.php")
+    fun searchTeams(@Query("t") query: String):Observable<TeamResponse>
+
 
     companion object {
         fun create(): DataRepository {
